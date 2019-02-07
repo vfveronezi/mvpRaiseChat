@@ -1,0 +1,31 @@
+{
+  "name": "mvpraisechat",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "dependencies": {
+    "express": "^4.14.0",
+    "html": "^1.0.0",
+    "i": "^0.3.5",
+    "jquery": "^3.1.1",
+    "npm": "^3.10.9",
+    "socket.io-client": "^1.5.1",
+    "socketio": "^1.0.0",
+    "yarn": "^1.6.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vfveronezi/mvpRaiseChat.git"
+  },
+  "author": "Vitor Veronezi",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/vfveronezi/mvpRaiseChat/issues"
+  },
+  "homepage": "https://github.com/vfveronezi/mvpRaiseChat#readme"
+}

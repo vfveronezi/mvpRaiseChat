@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="shortcut icon" href="https://img.icons8.com/cotton/64/000000/sms-1.png">
+  <meta charset="UTF-8">
+  <title>SAC</title>
+  <link rel="stylesheet" type="text/css" href="/assets/css.css">
+</head>
+
+<body>
+
+  <div class="nickname_container" id="nick">
+
+    <!--Aqui você pode pegar o nome do cliente direto de uma api-->
+    <span>Digite seu apelido:</span>
+    <form id="submit">
+      <input type="text" id="nickname" />
+    </form>
+
+  </div>
+
+  <div id="chat" hidden>
+
+    <div class="menu">
+      <div class="name" id="name">Camilla</div>
+      <div class="last" id="time">18:09</div>
+    </div>
+
+    <ol class="chat">
+
+    </ol>
+
+    <!--Aqui você pode pega a mensagem do cara-->
+    <input class="textarea" type="text" placeholder="Escreva aqui!" id="textarea" />
+  </div>
+
+  
+    <!--Aqui a mágica acontece-->
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+  <script>
+    $(document).ready(function () {
+
+      //ele foi conectado na porta 3000
+      var socket = io.connect("http://localhost:3000");
+      var ready = false;
+
+      $("#submit").submit(function (e) {
+        e.preventDefault();
+        $("#nick").fadeOut();
+        $("#chat").fadeIn();
+       
+        var name = $("#nickname").val();
+        var time = new Date();
+        $("#name").html(name);
+        $("#time").html('Primeiro login: ' + time.getHours() + ':' + time.getMinutes());
+
+        ready = true;
+
+       socket.emit("join", name);
+
+      });
+
+      $("#textarea").keypress(function (e) {
+        if (e.which == 13) {
+          var text = $("#textarea").val();
+          $("#textarea").val('');
+          var time = new Date();
+          $(".chat").append('<li class="self"><div class="msg"><span>' + $("#nickname").val() + ':</span><p>' + text + '</p><time>' + time.getHours() + ':' + time.getMinutes() + '</time></div></li>');
+          socket.emit("send", text);
+
+        }
+      });
+
+
+      //SOCKET ATUALIZA O CHAT
+      socket.on("update", function (msg) {
+        if (ready) {
+          $('.chat').append('<li class="info">' + msg + '</li>')
+        }
+      });
+
+      //SOCKET 
+      socket.on("chat", function (client, msg) {
+        if (ready) {
+          var time = new Date();
+          $(".chat").append('<li class="other"><div class="msg"><span>' + client + ':</span><p>' + msg + '</p><time>' + time.getHours() + ':' + time.getMinutes() + '</time></div></li>');
+        }
+      });
+
+    });
+
+  </script>
+</body>
+
+</html>
